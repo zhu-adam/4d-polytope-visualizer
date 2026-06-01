@@ -3,14 +3,11 @@ import { rotateXY, rotateXZ, rotateXW, rotateYZ, rotateYW, rotateZW, multiplyMat
 import { perspectiveProject } from '../math/projection'
 import { Renderer } from '../renderer/Renderer'
 
-// Angular velocities in rad/s for each rotation plane: XY, XZ, XW, YZ, YW, ZW
-// Incommensurable — no two share a rational ratio, so motion never repeats
 const VELOCITIES = [0.31, 0.47, 0.19, 0.53, 0.37, 0.61]
 
 const VIEWER_DISTANCE = 3.0
-const W_RANGE = Math.SQRT2 // vertices lie on sphere of radius √2
+const W_RANGE = Math.SQRT2
 
-// Maps a post-rotation W value to RGB: deep (low W) → dark blue, near (high W) → bright cyan
 function wToColor(w: number): [number, number, number] {
   const t = Math.max(0, Math.min(1, (w + W_RANGE) / (2 * W_RANGE)))
   return [t * 0.5, t * 0.9, 0.4 + t * 0.6]
@@ -48,7 +45,6 @@ export class Visualizer {
     }
     this.lastTime = time
 
-    // Compose all 6 plane rotations into one 4D matrix
     const rot = [
       rotateXY(this.angles[0]),
       rotateXZ(this.angles[1]),
@@ -58,12 +54,10 @@ export class Visualizer {
       rotateZW(this.angles[5]),
     ].reduce((acc, m) => multiplyMat4(acc, m))
 
-    // Transform: rotate each vertex, then project 4D→3D
     const rotated = this.vertices.map(v => applyMat4(rot, v))
     const projected = rotated.map(v => perspectiveProject(v, VIEWER_DISTANCE))
     const wVals = rotated.map(v => v[3])
 
-    // Build flat buffers for LineSegments (2 endpoints per edge)
     const positions = this.positions
     const colors = this.colors
 

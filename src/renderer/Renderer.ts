@@ -25,7 +25,6 @@ export class Renderer {
     this.webgl.setClearColor(0x000000)
     container.appendChild(this.webgl.domElement)
 
-    // LineSegments layout: 2 vertices per edge, each with 3 floats
     this.geometry = new THREE.BufferGeometry()
     const positions = new Float32Array(edgeCount * 2 * 3)
     const colors = new Float32Array(edgeCount * 2 * 3)

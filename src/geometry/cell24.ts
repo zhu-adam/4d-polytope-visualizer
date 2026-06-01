@@ -4,7 +4,6 @@ export function getVertices(): Vec4[] {
   const vertices: Vec4[] = []
   const signs = [1, -1] as const
 
-  // All ways to place ±1 in two of four positions
   for (let i = 0; i < 4; i++) {
     for (let j = i + 1; j < 4; j++) {
       for (const a of signs) {

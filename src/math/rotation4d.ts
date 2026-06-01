@@ -48,8 +48,6 @@ export function rotateZW(theta: number): Mat4 {
           0, 0, s,  c]
 }
 
-// Row-major matrix multiplication: C = A × B
-// C[r][c] = Σ_k A[r][k] * B[k][c]
 export function multiplyMat4(a: Mat4, b: Mat4): Mat4 {
   const out: number[] = new Array(16)
   for (let r = 0; r < 4; r++) {
@@ -61,7 +59,6 @@ export function multiplyMat4(a: Mat4, b: Mat4): Mat4 {
   return out
 }
 
-// Row-major M × column vector v
 export function applyMat4(m: Mat4, v: Vec4): Vec4 {
   return [
     m[0]*v[0] + m[1]*v[1] + m[2]*v[2] + m[3]*v[3],
