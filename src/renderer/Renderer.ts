@@ -5,6 +5,8 @@ export class Renderer {
   private camera: THREE.PerspectiveCamera
   private webgl: THREE.WebGLRenderer
   private geometry: THREE.BufferGeometry
+  private material: THREE.LineBasicMaterial
+  private lineSegments: THREE.LineSegments
 
   constructor(container: HTMLElement, edgeCount: number) {
     this.scene = new THREE.Scene()
@@ -30,9 +32,9 @@ export class Renderer {
     this.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     this.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
 
-    const material = new THREE.LineBasicMaterial({ vertexColors: true })
-    const lineSegments = new THREE.LineSegments(this.geometry, material)
-    this.scene.add(lineSegments)
+    this.material = new THREE.LineBasicMaterial({ vertexColors: true })
+    this.lineSegments = new THREE.LineSegments(this.geometry, this.material)
+    this.scene.add(this.lineSegments)
 
     window.addEventListener('resize', this.onResize)
   }
@@ -49,7 +51,9 @@ export class Renderer {
 
   dispose(): void {
     window.removeEventListener('resize', this.onResize)
+    this.scene.remove(this.lineSegments)
     this.geometry.dispose()
+    this.material.dispose()
     this.webgl.dispose()
   }
 
