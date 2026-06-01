@@ -1,6 +1,6 @@
 # 4d-polytope-visualizer
 
-A web based canvas that visualizes the 24 cell polytope. It uses a simple perspective projection, but I'll add more projections like stereographic, orgraphic, etc. I promise! :)
+A web based canvas that visualizes the 24 cell polytope. It uses a simple perspective projection, but I'll add more projections like stereographic, orthographic, etc. I promise! :)
 
 ## Optimizations
 
