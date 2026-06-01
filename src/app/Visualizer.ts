@@ -23,9 +23,13 @@ export class Visualizer {
   private angles = [0, 0, 0, 0, 0, 0]
   private rafId: number | null = null
   private lastTime: number | null = null
+  private positions: Float32Array
+  private colors: Float32Array
 
   constructor(container: HTMLElement) {
     this.renderer = new Renderer(container, this.edges.length)
+    this.positions = new Float32Array(this.edges.length * 6)
+    this.colors = new Float32Array(this.edges.length * 6)
   }
 
   start(): void {
@@ -39,7 +43,7 @@ export class Visualizer {
 
   private tick(time: DOMHighResTimeStamp): void {
     if (this.lastTime !== null) {
-      const dt = (time - this.lastTime) / 1000
+      const dt = Math.min((time - this.lastTime) / 1000, 1 / 30)
       for (let i = 0; i < 6; i++) this.angles[i] += VELOCITIES[i] * dt
     }
     this.lastTime = time
@@ -60,8 +64,8 @@ export class Visualizer {
     const wVals = rotated.map(v => v[3])
 
     // Build flat buffers for LineSegments (2 endpoints per edge)
-    const positions = new Float32Array(this.edges.length * 6)
-    const colors = new Float32Array(this.edges.length * 6)
+    const positions = this.positions
+    const colors = this.colors
 
     this.edges.forEach(([i, j], e) => {
       const [x0, y0, z0] = projected[i]
