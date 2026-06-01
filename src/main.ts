@@ -1,2 +1,5 @@
+import { Visualizer } from './app/Visualizer'
+
 const app = document.getElementById('app')!
-console.log('4D — scaffold ok', app)
+const visualizer = new Visualizer(app)
+visualizer.start()
